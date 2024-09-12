@@ -65,9 +65,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                        `----------------------------------'  `----------------------------------'
  */
     [_BASE] = LAYOUT(
-      KC_TAB,   KC_J,       KC_C,       KC_Y,       KC_F,       KC_K,                                             KC_Z,  KC_L,       KC_COMM,    KC_U,       KC_Q,       KC_BSLS,
-      ESC,      LGUI(KC_R), LALT(KC_S), LCTL(KC_T), LSFT(KC_H), KC_D,                                             KC_M,  RSFT(KC_N), RCTL(KC_A), RALT(KC_I), RGUI(KC_O), KC_EQL,
-      SS_EMAIL, KC_SLSH,    KC_V,       KC_G,       KC_P,       KC_B, TD(TD_SNST),  KC_NO,   KC_NO, TD(TD_CP_PT), KC_X,  KC_W,       KC_DOT,     KC_SCLN,    KC_MINS,    SS_SUDO,
+      KC_TAB,   KC_J,        KC_C,        KC_Y,        KC_F,        KC_K,                                             KC_Z,  KC_L,        KC_COMM,     KC_U,        KC_Q,        KC_BSLS,
+      ESC,      LGUI_T(KC_R),LALT_T(KC_S),LCTL_T(KC_T),LSFT_T(KC_H),KC_D,                                             KC_M,  RSFT_T(KC_N),RCTL_T(KC_A),RALT_T(KC_I),RGUI_T(KC_O),KC_EQL,
+      SS_EMAIL, KC_SLSH,     KC_V,        KC_G,        KC_P,        KC_B, TD(TD_SNST),  KC_NO,   KC_NO, TD(TD_CP_PT), KC_X,  KC_W,        KC_DOT,      KC_SCLN,     KC_MINS,     SS_SUDO,
                 KC_MUTE, KC_LBRC , LT(_NUM_SCHAR, KC_E), LT(_NAV_MEDIA, KC_BSPC), KC_GRV, QK_REP, LT(_NAV_MEDIA, KC_ENT), LT(_NUM_SCHAR, KC_SPC),  KC_RBRC, KC_MPLY
     ),
 /*
