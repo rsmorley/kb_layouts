@@ -22,16 +22,22 @@ uint16_t cmd_tab_timer = 0;
 
 static bool     is_asleep = false;
 
+// send string Declarations
+enum {
+    SS_EMAIL = 0,
+    SS_SUDO
+};
+
+
 //Tap Dance Declarations
 enum {
   // TD_GRAVE_ESCAPE = 0,
-  TD_COPY_PASTE = 0,
-  TD_SCREENSHOT
+  TD_CP_PT = 0,
+  TD_SNST
 };
 
 #define KC_COPY LCMD(KC_C)
 #define KC_PASTE LCMD(KC_V)
-
 tap_dance_action_t tap_dance_actions[] = {
   //Tap once for Grave, twice for ESC
   // [TD_GRAVE_ESCAPE]  = ACTION_TAP_DANCE_DOUBLE(KC_GRV, KC_ESC),
@@ -44,7 +50,7 @@ tap_dance_action_t tap_dance_actions[] = {
 enum layers {
     _BASE = 0,
     _NUM_NAV,
-    _FUNCTION,
+    _FUNC_MED,
     _ADJUST
 };
 
@@ -66,9 +72,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
     [_BASE] = LAYOUT(
       KC_TAB,   KC_J,        KC_C,        KC_Y,        KC_F,        KC_K,                                             KC_Z,  KC_L,        KC_COMM,     KC_U,        KC_Q,        KC_BSLS,
-      ESC,      LGUI_T(KC_R),LALT_T(KC_S),LCTL_T(KC_T),LSFT_T(KC_H),KC_D,                                             KC_M,  RSFT_T(KC_N),RCTL_T(KC_A),RALT_T(KC_I),RGUI_T(KC_O),KC_EQL,
-      SS_EMAIL, KC_SLSH,     KC_V,        KC_G,        KC_P,        KC_B, TD(TD_SNST),  KC_NO,   KC_NO, TD(TD_CP_PT), KC_X,  KC_W,        KC_DOT,      KC_SCLN,     KC_MINS,     SS_SUDO,
-                KC_MUTE, KC_LBRC , LT(_NUM_SCHAR, KC_E), LT(_NAV_MEDIA, KC_BSPC), KC_GRV, QK_REP, LT(_NAV_MEDIA, KC_ENT), LT(_NUM_SCHAR, KC_SPC),  KC_RBRC, KC_MPLY
+      KC_ESC,      LGUI_T(KC_R),LALT_T(KC_S),LCTL_T(KC_T),LSFT_T(KC_H),KC_D,                                             KC_M,  RSFT_T(KC_N),RCTL_T(KC_A),RALT_T(KC_I),RGUI_T(KC_O),KC_EQL,
+      SS_EMAIL, KC_SLSH,     KC_V,        KC_G,        KC_P,        KC_B, TD(TD_SNST),  KC_NO,   KC_NO, TD(TD_CP_PT), KC_X,  KC_W,        KC_DOT,      KC_SCLN,     KC_MINS,     KC_QUOT,
+                KC_MUTE, KC_LBRC , LT(_NUM_NAV, KC_E), LT(_FUNC_MED, KC_BSPC), KC_GRV, SS_SUDO, LT(_FUNC_MED, KC_ENT), LT(_NUM_NAV, KC_SPC),  KC_RBRC, KC_MPLY
     ),
 /*
  * Raise Layer: Number keys, special keys
@@ -84,10 +90,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                        `----------------------------------'  `----------------------------------'
  */
     [_NUM_NAV] = LAYOUT(
-      _______, KC_7, 	  KC_8,    KC_9,    KC_0,    KC_5,                                        KC_6,    KC_1,    KC_2,    KC_3,    KC_4,    _______,
-      _______, _______, KC_LEFT, KC_DOWN, KC_UP,   KC_RIGHT,                                     KC_H,    KC_J,   KC_K,    KC_L,    _______, _______,
+      _______, KC_7, 	KC_8,    KC_9,    KC_0,    KC_5,                                        KC_6,    KC_1,    KC_2,    KC_3,    KC_4,    _______,
+      _______, _______, KC_LEFT, KC_DOWN, KC_UP,   KC_RIGHT,                                    _______, _______, _______, _______, _______, _______,
       _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-                                 _______, _______, _______, _______, _______, _______, _______,   _______, _______, _______
+                                 _______, _______, _______, _______, _______, QK_REP, _______,   _______, _______, _______
     ),
 /*
  * Lower Layer: Navigation and Media Controls
@@ -103,13 +109,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        `----------------------------------'  `----------------------------------'
  */
-    [_FUNCTION] = LAYOUT(
+    [_FUNC_MED] = LAYOUT(
       _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                                        KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  _______,
       _______, _______, _______, _______,  _______, _______,                                     _______, _______, _______, KC_F11,  KC_F12,  _______,
       _______, _______, _______, _______,  _______, _______, _______, _______, _______, _______, _______, KC_MEDIA_PREV_TRACK, KC_MEDIA_PLAY_PAUSE, KC_MEDIA_NEXT_TRACK, _______, _______,
                                  _______,  _______, _______, _______, _______, _______, _______, _______, _______, _______
     ),
- */
 /*
  * Adjust Layer: Function keys, RGB
  *
@@ -165,12 +170,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     case SS_EMAIL:
       if (record->event.pressed) {
-        SEND_STRING("morley.rs@gmail.com")
+        SEND_STRING("morley.rs@gmail.com");
       }
       return false;
     case SS_SUDO:
       if (record->event.pressed) {
-        SEND_STRING("sudo !!")
+        SEND_STRING("sudo !!");
       }
       return false;
   }
@@ -189,7 +194,7 @@ void matrix_scan_user(void) {
 }
 
 layer_state_t layer_state_set_user(layer_state_t state) {
-    return update_tri_layer_state(state, _NAV_MEDIA, _NUM_SCHAR, _ADJUST);
+    return update_tri_layer_state(state, _FUNC_MED, _NUM_NAV, _ADJUST);
 }
 
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
@@ -288,11 +293,11 @@ static void render_status(void) {
         case _BASE:
             oled_write_P(PSTR("Base\n"), false);
             break;
-        case _NAV_MEDIA:
-            oled_write_P(PSTR("Nav & Media\n"), false);
+        case _FUNC_MED:
+            oled_write_P(PSTR("Media & Fs\n"), false);
             break;
-        case _NUM_SCHAR:
-            oled_write_P(PSTR("Nums & Spcl\n"), false);
+        case _NUM_NAV:
+            oled_write_P(PSTR("Nav & Nums\n"), false);
             break;
         case _ADJUST:
             oled_write_P(PSTR("Adjust\n"), false);
@@ -342,7 +347,7 @@ bool oled_task_user(void) {
 #ifdef ENCODER_ENABLE
 bool encoder_update_user(uint8_t index, bool clockwise) {
     switch (get_highest_layer(layer_state)) {
-        case _NAV_MEDIA:
+        case _FUNC_MED:
             if (index == 0) {
                 // Undo/Redo
                 if (clockwise) {
@@ -359,7 +364,7 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
                 }
             }
             break;
-        case _NUM_SCHAR:
+        case _NUM_NAV:
             if (index == 0) {
                 // scroll by word
                 if (clockwise) {
