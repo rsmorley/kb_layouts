@@ -39,7 +39,7 @@
 #define CAPS_WORD_INVERT_ON_SHIFT
 
 // does nothing if REPEAT_KEY_ENABLE is not == yes in rules.mk
-#define NO_ALT_REPEAT_KEY
+// #define NO_ALT_REPEAT_KEY
 
 // set default tapping term
 //#define TAPPING_TERM 200
