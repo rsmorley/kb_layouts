@@ -51,7 +51,8 @@ enum layers {
     _BASE = 0,
     _NUM_NAV,
     _FUNC_MED,
-    _ADJUST
+    _ADJUST,
+    _QWERTY
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -74,7 +75,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       KC_TAB,   KC_J,        KC_C,        KC_Y,        KC_F,        KC_K,                                             KC_Z,  KC_L,        KC_COMM,     KC_U,        KC_Q,        KC_BSLS,
       KC_ESC,      LGUI_T(KC_R),LALT_T(KC_S),LCTL_T(KC_T),LSFT_T(KC_H),KC_D,                                             KC_M,  RSFT_T(KC_N),RCTL_T(KC_A),RALT_T(KC_I),RGUI_T(KC_O),KC_EQL,
       SS_EMAIL, KC_SLSH,     KC_V,        KC_G,        KC_P,        KC_B, TD(TD_SNST),  KC_NO,   KC_NO, TD(TD_CP_PT), KC_X,  KC_W,        KC_DOT,      KC_SCLN,     KC_MINS,     KC_QUOT,
-                KC_MUTE, LT(_FUNC_MED, KC_LBRC), LT(_NUM_NAV, KC_E), KC_BSPC, KC_GRV, SS_SUDO, LT(_FUNC_MED, KC_ENT), LT(_NUM_NAV, KC_SPC),  KC_RBRC, KC_MPLY
+                TG(_QWERTY), LT(_FUNC_MED, KC_LBRC), LT(_NUM_NAV, KC_E), KC_BSPC, KC_GRV, SS_SUDO, LT(_FUNC_MED, KC_ENT), LT(_NUM_NAV, KC_SPC),  KC_RBRC, KC_MPLY
     ),
 /*
  * Raise Layer: Number keys, special keys
@@ -134,6 +135,26 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       _______, RGB_TOG, RGB_SAI, RGB_HUI, RGB_VAI, RGB_MOD,                                     _______, _______, _______, _______, _______, _______,
       _______, _______, RGB_SAD, RGB_HUD, RGB_VAD, RGB_RMOD,_______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
                                  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
+    ),
+/*
+ * Base Layer: qwerty
+ *
+ * ,-------------------------------------------.                              ,-------------------------------------------.
+ * |RAIS/ESC|   Q  |   W  |   E  |   R  |   T  |                              |   Y  |   U  |   I  |   O  |   P  |  | \   |
+ * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
+ * |Ctrl/BS |   A  |   S  |  D   |   F  |   G  |                              |   H  |   J  |   K  |   L  | ;  : |  ' "   |
+ * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
+ * | LShift |   Z  |   X  |   C  |   V  |   B  |LShift|LShift|  |LShift|LShift|   N  |   M  | ,  < | . >  | /  ? |  - _   |
+ * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
+ *                        | GUI  | Del  | Enter| Space| Esc  |  | Enter| Space| Tab  | Bksp | AltGr|
+ *                        |      |      | Alt  | Lower| Raise|  | Lower| Raise|      |      |      |
+ *                        `----------------------------------'  `----------------------------------'
+ */
+    [_QWERTY] = LAYOUT(
+      QK_GESC,        KC_Q,   KC_W,   KC_E,   KC_R,   KC_T,                                         KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSPC,
+      LSFT_T(KC_TAB), KC_A,   KC_S,   KC_D,   KC_F,   KC_G,                                         KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, SC_RSPC,
+      SC_LCPO,        KC_Z,     KC_X,   KC_C,   KC_V,   KC_B,   KC_GRV, KC_NO,   KC_NO, TD(TD_COPY_PASTE),         KC_N,   KC_M,    KC_COMM, KC_DOT,  KC_RCTL, TD(TD_SCREENSHOT),
+              TG(_QWERTY), KC_LCMD , LT(_NUM_NAV, KC_E), LT(_FUNC_MED, KC_BSPC), KC_LALT, KC_RCMD, LT(_FUNC_MED, KC_ENT), LT(_NUM_NAV, KC_SPC),  KC_RALT, KC_MPLY
     ),
 // /*
 //  * Layer template
@@ -301,6 +322,9 @@ static void render_status(void) {
             break;
         case _ADJUST:
             oled_write_P(PSTR("Adjust\n"), false);
+            break;
+        case _QWERTY:
+            oled_write_P(PSTR("Qwerty\n"), false);
             break;
         default:
             oled_write_P(PSTR("Undefined\n"), false);
