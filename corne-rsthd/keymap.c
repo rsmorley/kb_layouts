@@ -15,12 +15,7 @@
  */
 #include QMK_KEYBOARD_H
 
-// used by encoders
-uint16_t encoder_timeout = 1000;
-bool is_cmd_tab_active = false;
-uint16_t cmd_tab_timer = 0;
-
-static bool     is_asleep = false;
+static bool    is_asleep = false;
 
 // send string Declarations
 enum {
