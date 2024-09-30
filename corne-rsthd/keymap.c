@@ -106,7 +106,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
     [_FUNC_MED] = LAYOUT(
       _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,		KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  _______,
-      _______, _______, _______, _______,  _______, _______,		_______, SS_SUDO, TD_CP_PT, KC_F11,  KC_F12,  _______,
+      _______, _______, _______, _______,  _______, _______,		TG(_QWERTY), SS_SUDO, TD_CP_PT, KC_F11,  KC_F12,  _______,
       _______, _______, _______, _______,  _______, _______,		_______, KC_MEDIA_PREV_TRACK, KC_MEDIA_PLAY_PAUSE, KC_MEDIA_NEXT_TRACK, _______, _______,
                                  _______,  _______, _______,		_______, _______, _______
     ),
@@ -125,10 +125,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                        `----------------------------------'  `----------------------------------'
  */
     [_ADJUST] = LAYOUT(
-      _______, _______, _______, _______,  _______, _______,                                    _______, _______, _______, _______, _______, _______,
-      _______, RGB_TOG, RGB_SAI, RGB_HUI, RGB_VAI, RGB_MOD,                                     _______, _______, _______, _______, _______, _______,
-      _______, _______, RGB_SAD, RGB_HUD, RGB_VAD, RGB_RMOD,_______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-                                 _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
+      _______, _______, _______, _______,  _______, _______,    _______, _______, _______, _______, _______, _______,
+      _______, RGB_TOG, RGB_SAI, RGB_HUI, RGB_VAI, RGB_MOD,     _______, _______, _______, _______, _______, _______,
+      _______, _______, RGB_SAD, RGB_HUD, RGB_VAD, RGB_RMOD,    _______, _______, _______, _______, _______, _______,
+                                 _______, _______, _______,     _______, _______, _______
     ),
 /*
  * Base Layer: qwerty
@@ -145,10 +145,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                        `----------------------------------'  `----------------------------------'
  */
     [_QWERTY] = LAYOUT(
-      QK_GESC,        KC_Q,   KC_W,   KC_E,   KC_R,   KC_T,                                         KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSPC,
-      LSFT_T(KC_TAB), KC_A,   KC_S,   KC_D,   KC_F,   KC_G,                                         KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, SC_RSPC,
-      SC_LCPO,        KC_Z,     KC_X,   KC_C,   KC_V,   KC_B,   KC_GRV, KC_NO,   KC_NO, TD(TD_CP_PT),         KC_N,   KC_M,    KC_COMM, KC_DOT,  KC_RCTL, TD(TD_SNST),
-              TG(_QWERTY), KC_LCMD , LT(_NUM_NAV, KC_E), LT(_FUNC_MED, KC_BSPC), KC_LALT, KC_RCMD, LT(_FUNC_MED, KC_ENT), LT(_NUM_NAV, KC_SPC),  KC_RALT, KC_MPLY
+      QK_GESC,        KC_Q,   KC_W,   KC_E,   KC_R,   KC_T,         KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSPC,
+      LSFT_T(KC_TAB), KC_A,   KC_S,   KC_D,   KC_F,   KC_G,         KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, SC_RSPC,
+      SC_LCPO,        KC_Z,     KC_X,   KC_C,   KC_V,   KC_B,       KC_N,   KC_M,    KC_COMM, KC_DOT,  KC_RCTL, KC_RCTL,
+              KC_LCMD , LT(_NUM_NAV, KC_E), LT(_FUNC_MED, KC_BSPC), LT(_FUNC_MED, KC_ENT), LT(_NUM_NAV, KC_SPC),  KC_RALT
     ),
 // /*
 //  * Layer template
@@ -174,7 +174,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 void keyboard_post_init_user(void) {
   //rainbow_swirl supports additional numbers 0-5
-  rgblight_mode_noeeprom(RGBLIGHT_MODE_RAINBOW_SWIRL + 4);
+  //rgblight_mode_noeeprom(RGBLIGHT_MODE_RAINBOW_SWIRL + 4);
 }
 
 void suspend_power_down_user(void) { is_asleep = true; }
@@ -183,11 +183,6 @@ void suspend_wakeup_init_user(void) { is_asleep = false; }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
-    case SS_EMAIL:
-      if (record->event.pressed) {
-        SEND_STRING("morley.rs@gmail.com");
-      }
-      return false;
     case SS_SUDO:
       if (record->event.pressed) {
         SEND_STRING("sudo !!");
@@ -304,9 +299,6 @@ static void render_qmk_logo(void) {
 */
 
 static void render_status(void) {
-    // QMK Logo and version information
-    render_qmk_logo();
-
     // Host Keyboard Layer Status
     oled_write_P(PSTR("Layer: "), false);
     switch (get_highest_layer(layer_state)) {
@@ -347,6 +339,14 @@ static void render_status(void) {
     oled_write_P(led_state.num_lock ? PSTR("NUMLCK ") : PSTR("       "), false);
     oled_write_P(led_state.caps_lock ? PSTR("CAPLCK ") : PSTR("       "), false);
     oled_write_P(led_state.scroll_lock ? PSTR("SCRLCK ") : PSTR("       "), false);
+/*
+    uint8_t mode = rgb_matrix_get_mode();
+    oled_write_P(PSTR("RGB: "), false);
+    oled_write_char('0' + mode, false);
+    oled_write_P(PSTR(" "), false);
+    oled_write_char(mode, false);
+    oled_write_P(PSTR("\n"), false);
+  */
 }
 
 bool oled_task_user(void) {
