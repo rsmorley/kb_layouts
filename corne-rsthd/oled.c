@@ -7,7 +7,11 @@ extern uint8_t is_master;
 static uint16_t oled_timer = 0;
 
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
-    return OLED_ROTATION_270;
+    if (!is_keyboard_master()) {
+	return OLED_ROTATION_270;
+    } else {
+    return OLED_ROTATION_0;
+    }
 }
 
 void render_animation(uint8_t frame) {

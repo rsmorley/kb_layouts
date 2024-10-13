@@ -14,10 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include QMK_KEYBOARD_H
-
-#ifdef OLED_DRIVER_ENABLE
 #include "oled.c"
-#endif
 
 // send string Declarations
 enum {
@@ -147,7 +144,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                        `----------------------------------'  `----------------------------------'
  */
     [_QWERTY] = LAYOUT(
-      QK_GESC,        KC_Q,   KC_W,   KC_E,   KC_R,   KC_T,         KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSPC,
+      QK_GESC,        KC_Q,   KC_W,   KC_E,   KC_R,   KC_T,         KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    TG(_QWERTY), 
       LSFT_T(KC_TAB), KC_A,   KC_S,   KC_D,   KC_F,   KC_G,         KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, SC_RSPC,
       SC_LCPO,        KC_Z,     KC_X,   KC_C,   KC_V,   KC_B,       KC_N,   KC_M,    KC_COMM, KC_DOT,  KC_RCTL, KC_RCTL,
               KC_LCMD , LT(_NUM_NAV, KC_E), LT(_FUNC_MED, KC_BSPC), LT(_FUNC_MED, KC_ENT), LT(_NUM_NAV, KC_SPC),  KC_RALT
@@ -178,10 +175,6 @@ void keyboard_post_init_user(void) {
   //rainbow_swirl supports additional numbers 0-5
   //rgblight_mode_noeeprom(RGBLIGHT_MODE_RAINBOW_SWIRL + 4);
 }
-
-void suspend_power_down_user(void) { is_asleep = true; }
-
-void suspend_wakeup_init_user(void) { is_asleep = false; }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   if (record->event.pressed) {

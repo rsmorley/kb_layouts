@@ -51,6 +51,7 @@
 #    define ENABLE_RGB_MATRIX_SOLID_REACTIVE_MULTINEXUS
 #endif
 
+#define RGB_MATRIX_TYPING_HEATMAP_DECREASE_DELAY_MS 100
 
 // requires caps word enabled in rules.mk
 #define BOTH_SHIFTS_TURNS_ON_CAPS_WORD
