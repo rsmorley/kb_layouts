@@ -5,6 +5,7 @@ CAPS_WORD_ENABLE = yes
 REPEAT_KEY_ENABLE = yes
 RGBLIGHT_ENABLE = no
 RGB_MATRIX_ENABLE = yes
+WPM_ENABLE = yes
 
 #save space
 LTO_ENABLE = yes

@@ -16,10 +16,9 @@
 
 #pragma once
 
-//#define OLED_TIMEOUT 10000
-//#define OLED_FADE_OUT
-//#define OLED_FADE_INTERVAL 15
-//#define OLED_DISPLAY_128X64
+#define OLED_TIMEOUT 50000
+#define OLED_FADE_OUT
+#define OLED_FADE_INTERVAL 5
 
 #ifdef RGB_MATRIX_ENABLE
 #   define RGB_MATRIX_KEYPRESSES // reacts to keypresses
@@ -53,9 +52,18 @@
 
 #define RGB_MATRIX_TYPING_HEATMAP_DECREASE_DELAY_MS 100
 
+// WPM
+#define WPM_SAMPLE_SECONDS 7
+#define WPM_SAMPLE_PERIODS 50
+
+#define SPLIT_MODS_ENABLE
+#define SPLIT_WPM_ENABLE
+#define SPLIT_LAYER_STATE_ENABLE
+
 // requires caps word enabled in rules.mk
 #define BOTH_SHIFTS_TURNS_ON_CAPS_WORD
 #define CAPS_WORD_INVERT_ON_SHIFT
 
+#define OLED_FONT_H "glcdfont-custom.c"
 // set custom tap terms per key
 //#define TAPPING_TERM_PER_KEY

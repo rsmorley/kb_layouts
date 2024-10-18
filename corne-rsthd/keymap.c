@@ -14,6 +14,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include QMK_KEYBOARD_H
+#include "glcdfont-custom.c"
+#include "totoro.c"
 #include "oled.c"
 
 // send string Declarations
@@ -21,6 +23,8 @@ enum {
     SS_SUDO = 0
 };
 
+// current frame for animation
+uint8_t frame = 0;
 
 //Tap Dance Declarations
 enum {
@@ -171,14 +175,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //     ),
 };
 
-void keyboard_post_init_user(void) {
-  //rainbow_swirl supports additional numbers 0-5
-  //rgblight_mode_noeeprom(RGBLIGHT_MODE_RAINBOW_SWIRL + 4);
-}
-
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   if (record->event.pressed) {
-    oled_timer = timer_read();
+    frame = (frame + 1) % 3;
   }
   switch (keycode) {
     case SS_SUDO:
@@ -195,6 +194,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 }
 
 /*
+ * i might need to reenable this for home row mods
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case LSFT_T(KC_TAB):
@@ -208,64 +208,131 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
 #ifdef OLED_ENABLE
 
 static void render_status(void) {
-    // Host Keyboard Layer Status
-    oled_write_P(PSTR("Layer: "), false);
-    switch (get_highest_layer(layer_state)) {
-        case _BASE:
-            oled_write_P(PSTR("Base\n"), false);
-            break;
-        case _FUNC_MED:
-            oled_write_P(PSTR("Media & Fs\n"), false);
-            break;
-        case _NUM_NAV:
-            oled_write_P(PSTR("Nav & Nums\n"), false);
-            break;
-        case _ADJUST:
-            oled_write_P(PSTR("Adjust\n"), false);
-            break;
-        case _QWERTY:
-            oled_write_P(PSTR("Qwerty\n"), false);
-            break;
-        default:
-            oled_write_P(PSTR("Undefined\n"), false);
-    }
 
-    // Modifier Statuses
-    uint8_t modifiers = get_mods();
-    oled_write_P(PSTR("Mods: "), false);
-    oled_write_P(PSTR("SHT"), (modifiers & MOD_MASK_SHIFT));
-    oled_write_P(PSTR(" "), false);
-    oled_write_P(PSTR("CTL"), (modifiers & MOD_MASK_CTRL));
-    oled_write_P(PSTR(" "), false);
-    oled_write_P(PSTR("ALT"), (modifiers & MOD_MASK_ALT));
-    oled_write_P(PSTR(" "), false);
-    oled_write_P(PSTR("CMD"), (modifiers & MOD_MASK_GUI));
-    oled_write_P(PSTR("\n"), false);
+  oled_write_P(blank_line, false);
+  oled_write_P(blank_line, false);
+  // Host Keyboard Layer Status
+  if(layer_state_is(_ADJUST)) {
+    oled_write_P(settings_layer, false);
+  } else if(layer_state_is(_FUNC_MED)) {
+    oled_write_P(media_layer, false);
+  } else if(layer_state_is(_NUM_NAV)) {
+    oled_write_P(num_layer, false);
+  } else if(layer_state_is(_QWERTY)) {
+    oled_write_P(qwerty_layer, false);
+  } else {
+    oled_write_P(base_layer, false);
+  }
 
+  oled_write_P(blank_line, false);
+  // Modifier Statuses
+  uint8_t modifiers = get_mods();
+  oled_write_P(ctrl_mod1, (modifiers & MOD_MASK_CTRL));
+  oled_write_P(shift_mod1, (modifiers & MOD_MASK_SHIFT));
+  oled_write_P(ctrl_mod2, (modifiers & MOD_MASK_CTRL));
+  oled_write_P(shift_mod2, (modifiers & MOD_MASK_SHIFT));
+  oled_write_P(os_mod1, (modifiers & MOD_MASK_GUI));
+  oled_write_P(alt_mod1, (modifiers & MOD_MASK_ALT));
+  oled_write_P(os_mod2, (modifiers & MOD_MASK_GUI));
+  oled_write_P(alt_mod2, (modifiers & MOD_MASK_ALT));
+
+  oled_write_P(blank_line, false);
+  oled_write_P(blank_line, false);
+  oled_write_P(blank_line, false);
+  oled_write_P(blank_line, false);
+
+  oled_write_ln("WPM", false);
+  char wpmStr[5];
+  char paddingStr[5];
+  uint8_t wpmLen = strlen(wpmStr);
+  itoa(get_current_wpm(), wpmStr, 10);
+  for (int i=0; i<(5-wpmLen); i++) {
+    strcat(paddingStr, " ");
+  }
+  oled_write_ln((wpmLen > 5 ? "0": strcat(paddingStr, wpmStr)), false);
+
+  /*
     // Host Keyboard LED Status
     // uint8_t led_usb_state = host_keyboard_leds();
     led_t led_state = host_keyboard_led_state();
     oled_write_P(led_state.num_lock ? PSTR("NUMLCK ") : PSTR("       "), false);
     oled_write_P(led_state.caps_lock ? PSTR("CAPLCK ") : PSTR("       "), false);
     oled_write_P(led_state.scroll_lock ? PSTR("SCRLCK ") : PSTR("       "), false);
-/*
-    uint8_t mode = rgb_matrix_get_mode();
-    oled_write_P(PSTR("RGB: "), false);
-    oled_write_char('0' + mode, false);
-    oled_write_P(PSTR(" "), false);
-    oled_write_char(mode, false);
-    oled_write_P(PSTR("\n"), false);
   */
 }
 
+void render_totoro(void) {
+  oled_write_P(blank_line, true);
+
+  oled_write_P(space_char, true);
+  oled_write_P(space_char, true);
+  oled_write_P(space_char, true);
+  oled_write_P(space_char, true);
+  oled_write_P(star0, false);
+
+  oled_write_P(blank_line, true);
+
+  oled_write_P(space_char, true);
+  oled_write_P(star1, false);
+  oled_write_P(space_char, true);
+  oled_write_P(space_char, true);
+  oled_write_P(space_char, true);
+
+  oled_write_P(space_char, true);
+  oled_write_P(space_char, true);
+  oled_write_P(space_char, true);
+  oled_write_P(moon0, false);
+  oled_write_P(space_char, true);
+
+  oled_write_P(space_char, true);
+  oled_write_P(space_char, true);
+  oled_write_P(space_char, true);
+  oled_write_P(moon1, false);
+  oled_write_P(space_char, true);
+
+  oled_write_P(blank_line, true);
+
+  oled_write_P(space_char, true);
+  oled_write_P(space_char, true);
+  oled_write_P(space_char, true);
+  oled_write_P(star2, false);
+  oled_write_P(space_char, true);
+
+  oled_write_P(space_char, true);
+  oled_write_P(space_char, true);
+  oled_write_P(star1, false);
+  oled_write_P(space_char, true);
+  oled_write_P(space_char, true);
+
+  oled_write_P(blank_line, true);
+
+  uint8_t frame_sizes[3] = {
+    sizeof(epd_bitmap_totoro0),
+    sizeof(epd_bitmap_totoro1),
+    sizeof(epd_bitmap_totoro2)
+  };
+  
+  // frame is incremented when a key is pressed
+  oled_write_raw_P(epd_bitmap_allArray[frame], frame_sizes[frame]);
+
+  /* 
+  * the screen is 32 pixels wide but the glcdfont 
+  * chars are 6 pixels wide. this leaves 2 columns
+  * of blank pixels on the right
+  */
+  for (int x=30; x<32; x++) {
+    for (int y=0; y<96; y++) {
+      oled_write_pixel(x, y, true);
+    }
+  }
+}
 bool oled_task_user(void) {
-    if (is_keyboard_master()) {
-        render_status();
-    }
-    else {
-        render_animation((timer_read() / 60) % 8);
-    }
-    return false;
+  if (is_keyboard_master()) {
+    render_totoro();
+  } else {
+    render_status();
+  }
+  return false;
 }
 
 #endif
