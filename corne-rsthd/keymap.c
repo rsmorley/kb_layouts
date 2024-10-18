@@ -23,8 +23,10 @@ enum {
     SS_SUDO = 0
 };
 
-// current frame for animation
-uint8_t frame = 0;
+// current totoro_frame for animation
+uint8_t totoro_frame = 0;
+// current horizontal position of moon for animation
+int moon_position = 3;
 
 //Tap Dance Declarations
 enum {
@@ -177,7 +179,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   if (record->event.pressed) {
-    frame = (frame + 1) % 3;
+    totoro_frame = (totoro_frame + 1) % 3;
+    if (totoro_frame == 2) {
+      moon_position = (moon_position - 1);
+      // set position to 5 so the moon is hidden for 3 frames
+      if (moon_position < 0) { moon_position = 5; }
+    }
   }
   switch (keycode) {
     case SS_SUDO:
@@ -242,14 +249,14 @@ static void render_status(void) {
   oled_write_P(blank_line, false);
 
   oled_write_ln("WPM", false);
-  char wpmStr[5];
+  char wpm_str[5];
   char paddingStr[5];
-  uint8_t wpmLen = strlen(wpmStr);
-  itoa(get_current_wpm(), wpmStr, 10);
-  for (int i=0; i<(5-wpmLen); i++) {
+  uint8_t wpm_len = strlen(wpm_str);
+  itoa(get_current_wpm(), wpm_str, 10);
+  for (int i=0; i<(5-wpm_len); i++) {
     strcat(paddingStr, " ");
   }
-  oled_write_ln((wpmLen > 5 ? "0": strcat(paddingStr, wpmStr)), false);
+  oled_write_ln((wpm_len > 5 ? "0": strcat(paddingStr, wpm_str)), false);
 
   /*
     // Host Keyboard LED Status
@@ -268,52 +275,50 @@ void render_totoro(void) {
   oled_write_P(space_char, true);
   oled_write_P(space_char, true);
   oled_write_P(space_char, true);
-  oled_write_P(star0, false);
+  oled_write_P(star0, true);
 
   oled_write_P(blank_line, true);
 
   oled_write_P(space_char, true);
-  oled_write_P(star1, false);
+  oled_write_P(star1, true);
   oled_write_P(space_char, true);
   oled_write_P(space_char, true);
   oled_write_P(space_char, true);
 
-  oled_write_P(space_char, true);
-  oled_write_P(space_char, true);
-  oled_write_P(space_char, true);
-  oled_write_P(moon0, false);
-  oled_write_P(space_char, true);
-
-  oled_write_P(space_char, true);
-  oled_write_P(space_char, true);
-  oled_write_P(space_char, true);
-  oled_write_P(moon1, false);
-  oled_write_P(space_char, true);
+  // animate the moon
+  for(int i=0;i < 5;i++) {
+    oled_write_P(i == moon_position ? moon0 : space_char, true);
+  }
+  for(int i=0;i < 5;i++) {
+    oled_write_P(i == moon_position ? moon1 : space_char, true);
+  }
 
   oled_write_P(blank_line, true);
 
   oled_write_P(space_char, true);
   oled_write_P(space_char, true);
   oled_write_P(space_char, true);
-  oled_write_P(star2, false);
+  oled_write_P(star2, true);
   oled_write_P(space_char, true);
 
   oled_write_P(space_char, true);
   oled_write_P(space_char, true);
-  oled_write_P(star1, false);
+  oled_write_P(star1, true);
   oled_write_P(space_char, true);
   oled_write_P(space_char, true);
 
   oled_write_P(blank_line, true);
+  oled_write_P(blank_line, true);
+  oled_write_P(blank_line, true);
 
-  uint8_t frame_sizes[3] = {
+  uint8_t totoro_frame_sizes[3] = {
     sizeof(epd_bitmap_totoro0),
     sizeof(epd_bitmap_totoro1),
     sizeof(epd_bitmap_totoro2)
   };
   
-  // frame is incremented when a key is pressed
-  oled_write_raw_P(epd_bitmap_allArray[frame], frame_sizes[frame]);
+  // totoro_frame is incremented when a key is pressed
+  oled_write_raw_P(epd_bitmap_allArray[totoro_frame], totoro_frame_sizes[totoro_frame]);
 
   /* 
   * the screen is 32 pixels wide but the glcdfont 
