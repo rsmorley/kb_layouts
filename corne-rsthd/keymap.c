@@ -222,17 +222,14 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     return update_tri_layer_state(state, _FUNC_MED, _NUM_NAV, _ADJUST);
 }
 
-/*
- * i might need to reenable this for home row mods
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
-        case LSFT_T(KC_TAB):
+        case LCTL_T(KC_T):
             return 125;
         default:
             return TAPPING_TERM;
     }
 }
-*/
 
 #ifdef OLED_ENABLE
 

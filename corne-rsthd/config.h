@@ -65,5 +65,6 @@
 #define CAPS_WORD_INVERT_ON_SHIFT
 
 #define OLED_FONT_H "glcdfont-custom.c"
+
 // set custom tap terms per key
-//#define TAPPING_TERM_PER_KEY
+#define TAPPING_TERM_PER_KEY
