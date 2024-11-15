@@ -31,6 +31,7 @@ qmk compile -kb crkbd -km rsmorley -e CONVERT_TO=rp2040_ce
 * laptop keyboard layout
 * adapted RSTHD layout to try to compensate for the lack of of thumb clusters and giant space bar
 * home row mods
-[!TODO] 
-  * add navigation layer
-  * look into kanata tray for easier toggling of custom map
+* navigation layer added 11/15/24
+
+> [!TODO] 
+>   * look into kanata tray for easier toggling of custom map
