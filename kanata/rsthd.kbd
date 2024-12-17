@@ -23,6 +23,11 @@
   lctl wkup lmet lalt         spc           ralt  rmet rctl
 )
 
+;; only intecpt the thinkpad keyboard
+(defcfg
+  linux-dev /dev/input/event3
+)
+
 (defvar
   tap-time 150
   hold-time 200
