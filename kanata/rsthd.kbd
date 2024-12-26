@@ -33,8 +33,9 @@
   hold-time 200
 )
 
-;; Definine two aliases, one for esc/control to other for function key
+;; Definine aliases, including homerow mods
 (defalias
+  esc (tap-hold $tap-time $hold-time esc (layer-toggle numpad))
   r (tap-hold $tap-time $hold-time r lmet)
   s (tap-hold $tap-time $hold-time s lalt)
   t (tap-hold $tap-time $hold-time t lctl)
@@ -52,16 +53,24 @@
 ;; backtick/grave key (@grl) which is an alias for a tap-hold key.
 (deflayer rsthd
   grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
-  tab  j    c    y    f    k    z    l    e    u    q    \    .    bspc
-  esc  @r   @s  @t    @h   d    m    @n   @a  @i    @o   =    ret
-  , /    v    g    p    b    x    w    .    ;    -    '
+  tab  j    c    y    f    k    z    l    e    u    q    \    .    grv
+  @esc @r   @s  @t    @h   d    m    @n   @a  @i    @o   =    ret
+  ,    /    v    g    p    b    x    w    .    ;    -    '
   lctl wkup lalt [          @spc            ] ralt rctl
 )
 
 (deflayer navigation
   _    _    _    _    _    _    _    _    _    _    _    _    _    _
-  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    7    8    9    0    5    6    1    2    3    4    _    _    _
   _    lft  down up   rght _    _    _    _    _    _    _    _
   _    _    _    _    _    _    _    _    _    _    _    _
   _    _    _    _              _              _    _    _
+)
+
+(deflayer numpad
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    1    2    3    -    _    _    _
+  _    lft  down up   rght _    _    4    5    6    +    _    _
+  _    _    _    _    _    _    0    7    8    9    .    _
+  _    _    _    _              bspc              _    _    _
 )
