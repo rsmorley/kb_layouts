@@ -52,6 +52,7 @@ enum layers {
     _NUM_NAV,
     _FUNC_MED,
     _ADJUST,
+    _NUMPAD,
     _QWERTY
 };
 
@@ -73,7 +74,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
     [_BASE] = LAYOUT(
       KC_TAB,   KC_J,        KC_C,        KC_Y,        KC_F,        KC_K,                                             KC_Z,  KC_L,        KC_COMM,     KC_U,        KC_Q,        KC_BSLS,
-      KC_ESC,      LGUI_T(KC_R),LALT_T(KC_S),LCTL_T(KC_T),LSFT_T(KC_H),KC_D,                                             KC_M,  RSFT_T(KC_N),RCTL_T(KC_A),RALT_T(KC_I),RGUI_T(KC_O),KC_EQL,
+      LT(_NUMPAD, KC_ESC),      LGUI_T(KC_R),LALT_T(KC_S),LCTL_T(KC_T),LSFT_T(KC_H),KC_D,                                             KC_M,  RSFT_T(KC_N),RCTL_T(KC_A),RALT_T(KC_I),RGUI_T(KC_O),KC_EQL,
       KC_GRV, KC_SLSH,     KC_V,        KC_G,        KC_P,        KC_B, TD(TD_SNST),  KC_NO,   KC_NO, TD(TD_CP_PT), KC_X,  KC_W,        KC_DOT,      KC_SCLN,     KC_MINS,     KC_QUOT,
                 TG(_QWERTY), LT(_FUNC_MED, KC_LBRC), LT(_NUM_NAV, KC_E), KC_BSPC, SS_EMAIL, SS_SUDO, LT(_FUNC_MED, KC_ENT), LT(_NUM_NAV, KC_SPC),  KC_RBRC, KC_MPLY
     ),
@@ -112,7 +113,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
     [_FUNC_MED] = LAYOUT(
       _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                                        KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  _______,
-      _______, _______, _______, _______,  _______, _______,                                     _______, _______, _______, KC_F11,  KC_F12,  _______,
+      _______, _______, _______, _______,  _______, _______,                                     TG(_QWERTY), SS_SUDO, TD(TD_CP_PT), KC_F11,  KC_F12,  _______,
       _______, _______, _______, _______,  _______, _______, _______, _______, _______, _______, _______, KC_MEDIA_PREV_TRACK, KC_MEDIA_PLAY_PAUSE, KC_MEDIA_NEXT_TRACK, _______, _______,
                                  _______,  _______, _______, _______, _______, _______, _______, _______, _______, _______
     ),
@@ -136,6 +137,27 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       _______, _______, RGB_SAD, RGB_HUD, RGB_VAD, RGB_RMOD,_______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
                                  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
     ),
+ /*
+  * Layer: numpad
+  *
+  * ,-------------------------------------------.              ,-------------------------------------------.
+  * |        |      |  1   |   2  |  3   |  -   |              |      |      |      |      |      |        |
+  * |--------+------+------+------+------+------|              |------+------+------+------+------+--------|
+  * |        |      |  4   |   5  |  6   |  +   |              |      |      |      |      |      |        |
+  * |--------+------+------+------+------+------+              +------+------+------+------+------+--------|
+  * |        |      |  7   |   8  |  9   |  .   |              |      |      |      |      |      |        |
+  * `----------------------+------+------+------+              +------+------+------+----------------------'
+  *                        |      |  0   |      |              |      |      |      |
+  *                        |      |      |      |              |      |      |      |
+  *                        `---------------------              ---------------------'
+  */
+     [_NUMPAD] = LAYOUT(
+       _______, _______, _______, _______, _______, _______,                                     KC_MINS, KC_1   , KC_2   , KC_3   , _______, _______,
+       _______, _______, _______, _______, _______, _______,                                     KC_EQL , KC_4   , KC_5   , KC_6   , _______, _______,
+       _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_DOT , KC_7   , KC_8   , KC_9   , _______, _______,
+                                  _______, _______, _______, _______, _______, _______, _______, KC_0   , _______, _______
+     ),
+
 /*
  * Base Layer: qwerty
  *
@@ -221,7 +243,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case LSFT_T(KC_TAB):
-            return 125;
+            return 175;
         default:
             return TAPPING_TERM;
     }
@@ -325,6 +347,9 @@ static void render_status(void) {
             break;
         case _QWERTY:
             oled_write_P(PSTR("Qwerty\n"), false);
+            break;
+        case _NUMPAD:
+            oled_write_P(PSTR("NUMPAD\n"), false);
             break;
         default:
             oled_write_P(PSTR("Undefined\n"), false);

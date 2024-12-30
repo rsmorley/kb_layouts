@@ -16,7 +16,7 @@
 
 #pragma once
 
-#define OLED_TIMEOUT 10000
+#define OLED_TIMEOUT 50000
 #define OLED_FADE_OUT
 #define OLED_FADE_INTERVAL 15
 #define OLED_DISPLAY_128X64
