@@ -73,9 +73,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
     [_BASE] = LAYOUT(
       KC_TAB,   KC_J,        KC_C,        KC_Y,        KC_F,        KC_K,               KC_Z,  KC_L,        KC_COMM,     KC_U,        KC_Q,        KC_BSLS,
-      KC_ESC,      LGUI_T(KC_R),LALT_T(KC_S),LCTL_T(KC_T),LSFT_T(KC_H),KC_D,            KC_M,  RSFT_T(KC_N),RCTL_T(KC_A),RALT_T(KC_I),RGUI_T(KC_O),KC_EQL,
+      LT(_NUMPAD, KC_ESC),   LGUI_T(KC_R),LALT_T(KC_S),LCTL_T(KC_T),LSFT_T(KC_H),KC_D,            KC_M,  RSFT_T(KC_N),RCTL_T(KC_A),RALT_T(KC_I),RGUI_T(KC_O),KC_EQL,
       KC_GRV, KC_SLSH,     KC_V,        KC_G,        KC_P,        KC_B, 		KC_X,  KC_W,        KC_DOT,      KC_SCLN,     KC_MINS,     KC_QUOT,
-                           LT(_FUNC_MED, KC_LBRC), LT(_NUM_NAV, KC_E), KC_BSPC, 	LT(_FUNC_MED, KC_ENT), LT(_NUM_NAV, KC_SPC),  LT(_NUMPAD, KC_RBRC)
+                           LT(_FUNC_MED, KC_LBRC), LT(_NUM_NAV, KC_E), KC_BSPC, 	LT(_FUNC_MED, KC_ENT), LT(_NUM_NAV, KC_SPC),  KC_RBRC
     ),
 /*
  * Raise Layer: Number keys, special keys
@@ -151,10 +151,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   *                        `---------------------              ---------------------'
   */
      [_NUMPAD] = LAYOUT(
-       _______, _______, KC_1   , KC_2   , KC_3   , KC_MINS,     _______, _______, _______, _______, _______, _______,
-       _______, _______, KC_4   , KC_5   , KC_6   , KC_EQL,      _______, _______, _______, _______, _______, _______,
-       _______, _______, KC_7   , KC_8   , KC_9   , KC_DOT,      _______, _______, _______, _______, _______, _______,
-                                  _______, KC_0   , _______,     _______, _______, _______
+       _______, _______, _______, _______, _______, _______,     KC_MINS, KC_1   , KC_2   , KC_3  , _______, _______,
+       _______, _______, _______, _______, _______, _______,     KC_EQL,  KC_4   , KC_5   , KC_6  , _______, _______,
+       _______, _______, _______, _______, _______, _______,     KC_DOT,  KC_7   , KC_8   , KC_9  , _______, _______,
+                                  _______, _______, _______,     _______, KC_0   , _______
      ),
 
 /*
