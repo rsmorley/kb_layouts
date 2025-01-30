@@ -222,14 +222,16 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     return update_tri_layer_state(state, _FUNC_MED, _NUM_NAV, _ADJUST);
 }
 
-uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
-    switch (keycode) {
-        case LCTL_T(KC_T):
-            return 175;
-        default:
-            return TAPPING_TERM;
-    }
-}
+/**/
+/*uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {*/
+/*    switch (keycode) {*/
+/*        case LCTL_T(KC_T):*/
+/*            return 175;*/
+/*        default:*/
+/*            return TAPPING_TERM;*/
+/*    }*/
+/*}*/
+/**/
 
 #ifdef OLED_ENABLE
 
@@ -269,7 +271,7 @@ static void render_status(void) {
   oled_write_P(blank_line, false);
   oled_write_P(blank_line, false);
 
-  oled_write_ln("WPM", false);
+  /*oled_write_ln("WPM", false);*/
   char wpm_str[5];
   char paddingStr[5];
   uint8_t wpm_len = strlen(wpm_str);
@@ -277,7 +279,7 @@ static void render_status(void) {
   for (int i=0; i<(5-wpm_len); i++) {
     strcat(paddingStr, " ");
   }
-  oled_write_ln((wpm_len > 5 ? "0": strcat(paddingStr, wpm_str)), false);
+  /*oled_write_ln((wpm_len > 5 ? "0": strcat(paddingStr, wpm_str)), false);*/
 
   /*
     // Host Keyboard LED Status
