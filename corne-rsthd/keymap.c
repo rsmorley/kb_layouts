@@ -25,6 +25,8 @@ enum {
 
 // current totoro_frame for animation
 uint8_t totoro_frame = 0;
+uint8_t moon_step = 0;
+uint8_t moon_period = 6;
 // current horizontal position of moon for animation
 int moon_position = 3;
 
@@ -153,7 +155,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      [_NUMPAD] = LAYOUT(
        _______, _______, _______, _______, _______, _______,     KC_KP_MINUS, KC_7   , KC_8   , KC_9  , _______, _______,
        _______, _______, _______, _______, _______, _______,     KC_KP_PLUS,  KC_4   , KC_5   , KC_6  , _______, _______,
-       _______, _______, _______, _______, _______, _______,     KC_KP_DOT,  KC_1   , KC_2   , KC_3  , _______, _______,
+       _______, _______, _______, _______, _______, _______,     KC_DOT,  KC_1   , KC_2   , KC_3  , _______, _______,
                                   _______, _______, _______,     _______, KC_0   , _______
      ),
 
@@ -202,7 +204,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   if (record->event.pressed) {
     totoro_frame = (totoro_frame + 1) % 3;
-    if (totoro_frame == 2) {
+    moon_step = (moon_step + 1) % moon_period;
+    if (moon_step == 0) {
       moon_position = (moon_position - 1);
       // set position to 5 so the moon is hidden for 3 frames
       if (moon_position < 0) { moon_position = 5; }
