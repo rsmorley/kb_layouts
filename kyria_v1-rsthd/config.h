@@ -35,7 +35,8 @@
 // #define NO_USB_STARTUP_CHECK
 
 // requires caps word enabled in rules.mk
-#define BOTH_SHIFTS_TURNS_ON_CAPS_WORD
+// shifts caps_word is really annoying with home row mods
+// #define BOTH_SHIFTS_TURNS_ON_CAPS_WORD
 #define CAPS_WORD_INVERT_ON_SHIFT
 
 // does nothing if REPEAT_KEY_ENABLE is not == yes in rules.mk
