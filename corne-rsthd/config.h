@@ -59,8 +59,9 @@
 #define SPLIT_WPM_ENABLE
 #define SPLIT_LAYER_STATE_ENABLE
 
+// both shifts is reall annoying with home row mods
+// #define BOTH_SHIFTS_TURNS_ON_CAPS_WORD
 // requires caps word enabled in rules.mk
-#define BOTH_SHIFTS_TURNS_ON_CAPS_WORD
 #define CAPS_WORD_INVERT_ON_SHIFT
 
 #define OLED_FONT_H "glcdfont-custom.c"

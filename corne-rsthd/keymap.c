@@ -33,8 +33,8 @@ int moon_position = 3;
 //Tap Dance Declarations
 enum {
   // TD_GRAVE_ESCAPE = 0,
-  TD_CP_PT = 0,
-  TD_SNST
+  TD_CP_PT,
+  //TD_SNST
 };
 
 #define KC_COPY LCMD(KC_C)
@@ -45,7 +45,7 @@ tap_dance_action_t tap_dance_actions[] = {
   //Tap once for Copy, twice for Paste
   [TD_CP_PT]  = ACTION_TAP_DANCE_DOUBLE(KC_COPY, KC_PASTE),
   //Tap once for screenshot w/ crosshairs, twice for screenshot menu
-  [TD_SNST]  = ACTION_TAP_DANCE_DOUBLE(G(S(KC_4)), G(S(KC_5)))
+  //[TD_SNST]  = ACTION_TAP_DANCE_DOUBLE(G(S(KC_4)), G(S(KC_5)))
 };
 
 enum layers {
@@ -94,7 +94,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
     [_NUM_NAV] = LAYOUT(
       _______, KC_7, 	  KC_8,    KC_9,  KC_0,     KC_5,		KC_6,    KC_1,    KC_2,    KC_3,    KC_4,    _______,
-      _______, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, _______,		_______, _______, _______, _______, _______, _______,
+      _______, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, CW_TOGG,		_______, _______, _______, _______, _______, _______,
       _______, _______, _______, _______, _______, _______,		_______, _______, _______, _______, _______, _______,
                                  _______, _______, _______,		_______, _______, _______
     ),
@@ -114,7 +114,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
     [_FUNC_MED] = LAYOUT(
       _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,		KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_DEL,
-      _______, _______, KC_PGDN, KC_PGUP,  _______, _______,		TG(_QWERTY), SS_SUDO, TD_CP_PT, KC_F11,  KC_F12,  _______,
+      _______, _______, KC_PGDN, KC_PGUP,  _______, _______,		TG(_QWERTY), SS_SUDO, TD(TD_CP_PT), KC_F11,  KC_F12,  _______,
       _______, _______, _______, _______,  _______, _______,		_______, KC_MEDIA_PREV_TRACK, KC_MEDIA_PLAY_PAUSE, KC_MEDIA_NEXT_TRACK, _______, _______,
                                  _______,  _______, _______,		_______, _______, _______
     ),
@@ -134,8 +134,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
     [_ADJUST] = LAYOUT(
       _______, _______, _______, _______,  _______, _______,    _______, _______, _______, _______, _______, _______,
-      RGB_TOG, RGB_SPI, RGB_SAI, RGB_HUI, RGB_VAI, RGB_MOD,     _______, _______, _______, _______, _______, _______,
-      _______, RGB_SPD, RGB_SAD, RGB_HUD, RGB_VAD, RGB_RMOD,    _______, _______, _______, _______, _______, _______,
+      UG_TOGG, RM_TOGG, _______, _______, UG_NEXT, RM_NEXT,     _______, _______, _______, _______, _______, _______,
+      _______, _______, _______, _______, UG_PREV, RM_PREV,     _______, _______, _______, _______, _______, _______,
                                  _______, _______, _______,     _______, _______, _______
     ),
  /*
